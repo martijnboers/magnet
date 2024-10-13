@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "application"
+version = "0.1.0"
+description = ""
+authors = ["Martijn Boers <martijn@boers.email>"]
+readme = "README.md"
+packages = [
+  { include = "application" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+libtorrent = "^2.0.9"
+requests = "^2.26.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
