@@ -110,7 +110,3 @@ def main():
     print("<---------- all results ------------->")
     for domain in domain_results:
         print(f"{ip} -> {domain}")
-
-
-if __name__ == "__main__":
-    main()
