@@ -1,6 +1,5 @@
 {
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-  inputs.poetry2nix.url = "github:nix-community/poetry2nix";
 
   outputs = {
     self,
@@ -11,22 +10,11 @@
     forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
     pkgs = forAllSystems (system: nixpkgs.legacyPackages.${system});
   in {
-    packages = forAllSystems (system: let
-      inherit (poetry2nix.lib.mkPoetry2Nix {pkgs = pkgs.${system};}) mkPoetryApplication;
-    in {
-      default = mkPoetryApplication {projectDir = self;};
-    });
-
-    devShells = forAllSystems (system: let
-      inherit (poetry2nix.lib.mkPoetry2Nix {pkgs = pkgs.${system};}) mkPoetryEnv;
-    in {
+    devShells = forAllSystems (system: {
       default = pkgs.${system}.mkShellNoCC {
         packages = with pkgs.${system}; [
-          (mkPoetryEnv {
-            python = pkgs.${system}.python310;
-            projectDir = self;
-          })
-          black
+          (python34.withPackages (python-pkgs: with python-pkgs; [cython pip black]))
+          alejandra
         ];
       };
     });
